@@ -24,6 +24,6 @@ public class PageController {
     @RequestMapping("/services")
     public String servicesPage() {
         System.out.println("Services page");
-        return "Services";
+        return "services";
     }
 }
