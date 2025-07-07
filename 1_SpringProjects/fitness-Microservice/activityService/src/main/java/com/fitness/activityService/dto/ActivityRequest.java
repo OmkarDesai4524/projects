@@ -2,7 +2,6 @@ package com.fitness.activityService.dto;
 
 import com.fitness.activityService.model.ActivityType;
 import lombok.Data;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 import java.util.Map;
