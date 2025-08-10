@@ -11,16 +11,22 @@ const ActivityForm = ({ onActivityAdded }) => {
     });
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            console.log("Submitting activity:", activity);
-            await addActivity(activity);
-            onActivityAdded();
-            setActivity({ type: "RUNNING", duration: '', caloriesBurned: ''});
-        } catch (error) {
-            console.error(error);
-        }
-    }
+  e.preventDefault();
+  try {
+    const formattedActivity = {
+      ...activity,
+      duration: parseInt(activity.duration, 10),
+      caloriesBurned: parseInt(activity.caloriesBurned, 10),
+    };
+
+    console.log("Submitting activity:", formattedActivity); // DEBUG
+    await addActivity(formattedActivity);
+    onActivityAdded?.(); // optional chaining prevents crash if undefined
+    setActivity({ type: "RUNNING", duration: '', caloriesBurned: '' });
+  } catch (error) {
+    console.error(error);
+  }
+}
     
   return (
     <Box component="form" onSubmit={handleSubmit} sx={{ mb: 4 }}>

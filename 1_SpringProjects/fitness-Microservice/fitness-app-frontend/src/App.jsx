@@ -4,13 +4,13 @@ import { AuthContext } from "react-oauth2-code-pkce";
 import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Navigate, Route, Routes, useLocation } from "react-router";
 import { setCredentials } from "./store/authSlice";
-import  ActivityForm from "./components/ActivityForm";
-import  ActivityList  from "./components/ActivityList.jsx";
+import ActivityForm from "./components/ActivityForm";
+import ActivityList from "./components/ActivityList";
 import ActivityDetail from "./components/ActivityDetail";
 
 const ActvitiesPage = () => {
   return (<Box sx={{ p: 2, border: '1px dashed grey' }}>
-    <ActivityForm onActivityAdded = {() => window.location.reload()} />
+    <ActivityForm onActivitiesAdded = {() => window.location.reload()} />
     <ActivityList />
   </Box>);
 }
