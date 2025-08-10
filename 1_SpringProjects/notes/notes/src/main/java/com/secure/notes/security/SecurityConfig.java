@@ -26,7 +26,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true,
                         jsr250Enabled = true)
-public class SecurityConfig {
+public class SecurityConfig  {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf ->
