@@ -5,6 +5,9 @@ import com.secure.notes.models.Role;
 import com.secure.notes.models.User;
 import com.secure.notes.repositories.RoleRepository;
 import com.secure.notes.repositories.UserRepository;
+import com.secure.notes.security.jwt.AuthEntryPointJwt;
+import com.secure.notes.security.jwt.AuthTokenFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +32,15 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true,
                         jsr250Enabled = true)
 public class SecurityConfig  {
+    // 1
+    @Autowired
+    private AuthEntryPointJwt unauthorizedHandler;
+
+    @Bean
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter();
+    }
+
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf ->
@@ -38,12 +50,12 @@ public class SecurityConfig  {
         http.authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/csrf-token").permitAll()
+                .requestMatchers("/api/auth/public/**").permitAll()
                 .anyRequest().authenticated());
+        http.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler));
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        http.csrf(AbstractHttpConfigurer::disable);
-//        http.addFilterBefore(new CustomLoggingFilter(), UsernamePasswordAuthenticationFilter.class);
-//        http.addFilterAfter(new RequestValidationFilter(), CustomLoggingFilter.class);
-        //http.formLogin(withDefaults());
+        http.formLogin(withDefaults());
         http.httpBasic(withDefaults());
         return http.build();
     }
